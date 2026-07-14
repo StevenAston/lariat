@@ -1,0 +1,15 @@
+{
+  "name": "lariat",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "start": "npm run start --workspace=server",
+    "test": "npm run test --workspaces --if-present"
+  }
+}

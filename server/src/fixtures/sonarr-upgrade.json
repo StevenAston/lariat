@@ -1,0 +1,33 @@
+{
+  "eventType": "Download",
+  "series": {
+    "id": 1,
+    "title": "Test Show",
+    "path": "C:\\Plex\\TV\\Test Show"
+  },
+  "episodes": [
+    {
+      "id": 123,
+      "episodeNumber": 1,
+      "seasonNumber": 1,
+      "title": "Pilot"
+    }
+  ],
+  "episodeFile": {
+    "id": 457,
+    "relativePath": "Season 1\\Test Show - S01E01 - Pilot.mkv",
+    "path": "C:\\Plex\\TV\\Test Show\\Season 1\\Test Show - S01E01 - Pilot.mkv",
+    "size": 1200000
+  },
+  "isUpgrade": true,
+  "downloadClient": "qBittorrent",
+  "downloadId": "deadbeef5678",
+  "deletedFiles": [
+    {
+      "id": 456,
+      "relativePath": "Season 1\\Test Show - S01E01 - Pilot.mkv",
+      "path": "C:\\Plex\\TV\\Test Show\\Season 1\\Test Show - S01E01 - Pilot.mkv",
+      "size": 1000000
+    }
+  ]
+}

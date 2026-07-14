@@ -1,0 +1,6 @@
+{"detail":{"error":"fetch failed"},"level":"error","message":"QBT check failed","source":"HealthCheck","timestamp":"2026-07-14T20:19:09.091Z"}
+{"detail":{"error":"*arr Request failed: 401 Unauthorized for /api/v3/series/999999"},"level":"error","message":"Sonarr check failed","source":"HealthCheck","timestamp":"2026-07-14T20:19:09.255Z"}
+{"detail":{"error":"fetch failed"},"level":"error","message":"Radarr check failed","source":"HealthCheck","timestamp":"2026-07-14T20:19:09.258Z"}
+{"level":"info","message":"Running startup integration...","source":"Startup","timestamp":"2026-07-14T20:19:09.262Z"}
+{"level":"info","message":"Starting reconciliation run...","source":"Reconciliation","timestamp":"2026-07-14T20:19:09.263Z"}
+{"level":"info","message":"Fetching all torrents from QBT...","source":"QbtPathMap","timestamp":"2026-07-14T20:19:09.263Z"}

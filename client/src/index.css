@@ -1,0 +1,72 @@
+@import '@radix-ui/themes/styles.css';
+
+:root {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  /* Radix UI overrides for a more premium dark mode */
+  --color-background: #0d0f12;
+  --color-panel-solid: #15171b;
+  --gray-a6: rgba(255, 255, 255, 0.08);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-background);
+  color: var(--gray-12);
+  /* Subtle mesh gradient background */
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.1) 0px, transparent 50%);
+  background-attachment: fixed;
+}
+
+/* Micro-animations and hover effects */
+a, button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.radix-themes a {
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+.radix-themes a:hover {
+  opacity: 1;
+  color: var(--iris-9);
+  transform: translateX(4px);
+}
+
+.radix-themes a:active {
+  transform: translateX(2px);
+}
+
+/* Premium card styling */
+.rt-Card {
+  background: rgba(255, 255, 255, 0.02) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rt-Card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+}
+
+/* Global scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gray-a6);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-a8);
+}

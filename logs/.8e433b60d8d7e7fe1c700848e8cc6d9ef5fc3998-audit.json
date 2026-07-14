@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\Users\\steve\\Development\\linkarr\\gemini\\linkarr\\logs\\.8e433b60d8d7e7fe1c700848e8cc6d9ef5fc3998-audit.json",
+    "files": [
+        {
+            "date": 1782613150676,
+            "name": "C:\\Users\\steve\\Development\\linkarr\\gemini\\linkarr\\logs\\test.log.2026-06-27",
+            "hash": "f00dd0a8f28681e6e87645aaeddbdd8b0c5401fc01663449e78daa1ebb0aff8d"
+        }
+    ],
+    "hashType": "sha256"
+}

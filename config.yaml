@@ -1,0 +1,12 @@
+logFile: "logs/lariat.log"
+videoExtensions: [".mkv", ".mp4", ".avi", ".m4v"]
+importMode: "copy" # copy or move
+debounceMs: 5000 # 5 seconds
+thresholds:
+  theta: 0.1 # size threshold fraction for sample detection
+  w: 0.05
+  r: 0.05
+timeouts:
+  recheck: 3600 # 1 hour
+schedules:
+  healthCheck: "0 * * * *" # Hourly
