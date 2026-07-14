@@ -4,3 +4,44 @@
 {"level":"info","message":"Running startup integration...","source":"Startup","timestamp":"2026-07-14T20:19:09.262Z"}
 {"level":"info","message":"Starting reconciliation run...","source":"Reconciliation","timestamp":"2026-07-14T20:19:09.263Z"}
 {"level":"info","message":"Fetching all torrents from QBT...","source":"QbtPathMap","timestamp":"2026-07-14T20:19:09.263Z"}
+{"detail":{"key":"value"},"level":"info","message":"testMessage","source":"testSource","timestamp":"2026-07-14T23:34:48.764Z"}
+{"level":"info","message":"Fetching all torrents from QBT...","source":"QbtPathMap","timestamp":"2026-07-14T23:34:48.767Z"}
+{"detail":{"hash":"hash123","plexSize":838860800,"qbtSize":524288000},"level":"warn","message":"File size difference > 200MB","source":"Detector","timestamp":"2026-07-14T23:34:48.768Z"}
+{"level":"info","message":"Firing recheck for hash123","source":"Coordinator","timestamp":"2026-07-14T23:34:57.766Z"}
+{"detail":{"hash":"missing"},"level":"warn","message":"Hash not found in QBT","source":"Resolver","timestamp":"2026-07-14T23:34:48.770Z"}
+{"detail":{"hash":"hash123","name":"sample.mkv"},"level":"warn","message":"File appears to be a sample, ignoring","source":"Detector","timestamp":"2026-07-14T23:34:48.770Z"}
+{"level":"info","message":"Fetched 2 torrents. Building path map...","source":"QbtPathMap","timestamp":"2026-07-14T23:34:48.769Z"}
+{"level":"info","message":"Path map built with 3 files.","source":"QbtPathMap","timestamp":"2026-07-14T23:34:48.769Z"}
+{"level":"info","message":"Initiating recheck for hash123","source":"RecheckWorker","timestamp":"2026-07-14T23:34:48.773Z"}
+{"level":"info","message":"Upgrade detected. Pausing old torrent oldhash","source":"UpgradeWorker","timestamp":"2026-07-14T23:34:48.774Z"}
+{"detail":{"hash":"hash123","state":"error"},"level":"warn","message":"Torrent is in an error state","source":"Resolver","timestamp":"2026-07-14T23:34:48.774Z"}
+{"level":"info","message":"Copying C:\\Users\\steve\\AppData\\Local\\Temp\\lariat-test-uz1RL8\\qbt.mkv over C:\\Users\\steve\\AppData\\Local\\Temp\\lariat-test-uz1RL8\\plex.mkv","source":"SwapWorker","timestamp":"2026-07-14T23:34:48.775Z"}
+{"level":"info","message":"Re-arming coordinators...","source":"Startup","timestamp":"2026-07-14T23:34:48.784Z"}
+{"level":"info","message":"Starting reconciliation run...","source":"Reconciliation","timestamp":"2026-07-14T23:34:48.788Z"}
+{"level":"info","message":"Firing recheck for hash_pack","source":"Coordinator","timestamp":"2026-07-14T23:34:48.789Z"}
+{"level":"info","message":"Fetching all torrents from QBT...","source":"QbtPathMap","timestamp":"2026-07-14T23:34:48.790Z"}
+{"level":"info","message":"Fetched 4 torrents. Building path map...","source":"QbtPathMap","timestamp":"2026-07-14T23:34:48.790Z"}
+{"level":"info","message":"Path map built with 4 files.","source":"QbtPathMap","timestamp":"2026-07-14T23:34:48.791Z"}
+{"detail":{"state":"pausedUP"},"level":"info","message":"Recheck complete for hash123","source":"RecheckWorker","timestamp":"2026-07-14T23:34:48.794Z"}
+{"detail":{"double_symlink":0,"healthy":1,"missing_real_file":1,"no_torrent":0,"orphan_symlink":1,"torrent_no_file":0,"total":5,"unmanaged_torrent":1,"unprocessed":1,"wrong_target":0},"level":"info","message":"Reconciliation complete","source":"Reconciliation","timestamp":"2026-07-14T23:34:48.797Z"}
+{"level":"info","message":"Resuming hash123","source":"RecheckWorker","timestamp":"2026-07-14T23:34:48.795Z"}
+{"level":"info","message":"Initiating recheck for hash123","source":"RecheckWorker","timestamp":"2026-07-14T23:34:48.800Z"}
+{"level":"info","message":"Handling import event for hash123","source":"Orchestrator","timestamp":"2026-07-14T23:34:48.802Z"}
+{"level":"info","message":"Moving (actually renaming) C:\\Users\\steve\\AppData\\Local\\Temp\\lariat-test-PFSaMx\\qbt2.mkv over C:\\Users\\steve\\AppData\\Local\\Temp\\lariat-test-PFSaMx\\plex2.mkv","source":"SwapWorker","timestamp":"2026-07-14T23:34:48.801Z"}
+{"level":"info","message":"Copying C:\\Users\\steve\\AppData\\Local\\Temp\\lariat-orch-PDPSNP/plex.mkv over C:\\Users\\steve\\AppData\\Local\\Temp\\lariat-orch-PDPSNP\\plex.mkv","source":"SwapWorker","timestamp":"2026-07-14T23:34:48.802Z"}
+{"level":"error","message":"Recheck polling timed out for hash123","source":"RecheckWorker","timestamp":"2026-07-14T23:34:48.825Z"}
+{"detail":{"foo":"bar"},"level":"info","message":"this is an info message","source":"testSource","timestamp":"2026-07-14T23:34:48.882Z"}
+{"level":"warn","message":"Link 1 health degraded to orphan_symlink","source":"HealthWorker","timestamp":"2026-07-14T23:34:48.982Z"}
+{"level":"info","message":"Starting scheduled health sweep","source":"HealthWorker","timestamp":"2026-07-14T23:34:48.992Z"}
+{"level":"warn","message":"Link 1 health degraded to missing_real_file","source":"HealthWorker","timestamp":"2026-07-14T23:34:48.993Z"}
+{"level":"warn","message":"Link 2 health degraded to missing_real_file","source":"HealthWorker","timestamp":"2026-07-14T23:34:48.994Z"}
+{"level":"info","message":"Sweep complete. Checked 2 links","source":"HealthWorker","timestamp":"2026-07-14T23:34:48.994Z"}
+{"level":"info","message":"Manual recheck triggered for hash hash1","source":"API","timestamp":"2026-07-14T23:34:50.008Z"}
+{"level":"info","message":"Dispatching Sonarr import event for hash deadbeef1234","source":"Webhook","timestamp":"2026-07-14T23:34:50.179Z"}
+{"level":"info","message":"Handling import event for deadbeef1234","source":"Orchestrator","timestamp":"2026-07-14T23:34:50.181Z"}
+{"level":"info","message":"Dispatching Sonarr import event for hash deadbeef5678","source":"Webhook","timestamp":"2026-07-14T23:34:50.224Z"}
+{"level":"info","message":"Handling import event for deadbeef5678","source":"Orchestrator","timestamp":"2026-07-14T23:34:50.225Z"}
+{"level":"error","message":"Error handling Sonarr event: fetch failed","source":"Webhook","timestamp":"2026-07-14T23:34:50.231Z"}
+{"level":"error","message":"Error handling Sonarr event: fetch failed","source":"Webhook","timestamp":"2026-07-14T23:34:50.248Z"}
+{"level":"info","message":"Received Sonarr Test event","source":"Webhook","timestamp":"2026-07-14T23:34:50.249Z"}
+{"detail":{"error":"Symlink privilege not held"},"level":"critical","message":"Symlink privilege check failed","source":"HealthCheck","timestamp":"2026-07-14T23:34:50.320Z"}

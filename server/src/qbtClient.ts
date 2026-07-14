@@ -29,10 +29,14 @@ export class QbtClient {
   }
 
   private async authenticate(): Promise<void> {
+    if (config.QBT_API_KEY) {
+      return; // Stateless authentication
+    }
+
     log.debug('QbtClient', 'Authenticating...');
     const params = new URLSearchParams();
-    params.append('username', config.QBT_USER);
-    params.append('password', config.QBT_PASS);
+    params.append('username', config.QBT_USER || '');
+    params.append('password', config.QBT_PASS || '');
 
     const res = await fetch(`${this.baseUrl}/api/v2/auth/login`, {
       method: 'POST',
@@ -57,17 +61,24 @@ export class QbtClient {
   }
 
   private async request<T>(endpoint: string, method: string = 'GET', body?: any, retryOn403: boolean = true): Promise<T> {
-    if (!this.cookie) {
+    if (!config.QBT_API_KEY && !this.cookie) {
       await this.authenticate();
+    }
+
+    const headers: Record<string, string> = {
+      ...(body ? { 'Content-Type': 'application/x-www-form-urlencoded' } : {})
+    };
+
+    if (config.QBT_API_KEY) {
+      headers['Authorization'] = `Bearer ${config.QBT_API_KEY}`;
+    } else if (this.cookie) {
+      headers['Cookie'] = this.cookie;
     }
 
     const res = await fetch(`${this.baseUrl}${endpoint}`, {
       method,
       body: body ? new URLSearchParams(body) : undefined,
-      headers: {
-        'Cookie': this.cookie!,
-        ...(body ? { 'Content-Type': 'application/x-www-form-urlencoded' } : {})
-      }
+      headers
     });
 
     if (res.status === 403 && retryOn403) {
