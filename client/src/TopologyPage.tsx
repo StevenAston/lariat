@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { Box, Flex, Heading, Select, Card, Text, Badge, Container } from '@radix-ui/themes';
+import { Box, Flex, Heading, Select, Card, Text, Badge } from '@radix-ui/themes';
 import { api } from './api';
 import { TopologyOverlay } from './components/TopologyOverlay';
-import { ExclamationTriangleIcon, CheckCircledIcon } from '@radix-ui/react-icons';
+import { AlertTriangle, CheckCircle } from 'lucide-react';
 
 export interface TopologyNode {
   id: string;
@@ -37,7 +37,7 @@ export function TopologyPage() {
   const fetchTopology = async () => {
     setLoading(true);
     try {
-      const res = await api.get(`/topology?lens=${lens}`);
+      const res = await api.getTopology(lens);
       setData(res.data);
     } catch (err) {
       console.error(err);
@@ -72,11 +72,11 @@ export function TopologyPage() {
           <Flex align="center" justify="between">
             <Text size="2" weight="bold" style={{ wordBreak: 'break-all' }}>{node.label}</Text>
             {isMissing ? (
-              <ExclamationTriangleIcon color="red" />
+              <AlertTriangle color="red" size={16} />
             ) : isHealthy ? (
-              <CheckCircledIcon color="green" />
+              <CheckCircle color="green" size={16} />
             ) : (
-              <ExclamationTriangleIcon color="orange" />
+              <AlertTriangle color="orange" size={16} />
             )}
           </Flex>
           {node.sublabel && (

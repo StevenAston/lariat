@@ -50,5 +50,6 @@ export const api = {
       recheckQueueDepth: number;
     }
   }>('/api/summary'),
-  getSystemHealth: () => fetchJson<any>('/api/health/system')
+  getSystemHealth: () => fetchJson<any>('/api/health/system'),
+  getTopology: (lens: string) => fetchJson<any>(`/api/topology?lens=${lens}`)
 };

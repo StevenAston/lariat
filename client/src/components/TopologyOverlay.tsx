@@ -1,9 +1,9 @@
-import { useEffect, useState, RefObject } from 'react';
-import { TopologyConnection } from '../TopologyPage';
+import { useEffect, useState, type RefObject } from 'react';
+import type { TopologyConnection } from '../TopologyPage';
 
 interface TopologyOverlayProps {
   connections: TopologyConnection[];
-  containerRef: RefObject<HTMLDivElement>;
+  containerRef: RefObject<HTMLDivElement | null>;
 }
 
 interface PathData {
