@@ -8,3 +8,4 @@ coverage
 *.sqlite
 *.db
 .DS_Store
+logs/
