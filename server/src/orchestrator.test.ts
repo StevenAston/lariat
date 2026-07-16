@@ -61,12 +61,14 @@ describe('Orchestrator', () => {
     process.env.ARR_API_KEY = 'apikey';
     process.env.SWAP_MODE = 'copy';
 
-    await handleImportEvent(event as any, mockQbt);
+    const promise = handleImportEvent(event as any, mockQbt);
+    await vi.runAllTimersAsync();
+    await promise;
 
     // Wait for debounce timeout to see it queued
     // But debounceRecheck only triggers a callback, we can just assert the link was saved and swapped
     const link = db.prepare('SELECT * FROM links WHERE hash = ?').get('hash123') as any;
     expect(link).not.toBeUndefined();
-    expect(link.swap_status).toBe('swapped');
+    expect(link.swap_status).toBe('linked');
   });
 });

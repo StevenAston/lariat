@@ -70,7 +70,7 @@ export async function handleImportEvent(event: ImportEvent, qbtClient: QbtClient
 
   // 5. Swap
   try {
-    await doSwap(linkId as number, loadConfig().importMode === 'move' ? 'move' : 'copy');
+    await doSwap(linkId as number, loadConfig().importMode === 'move' ? 'move' : 'copy', qbtClient);
   } catch (err: any) {
     log.error('Orchestrator', `Swap failed for link ${linkId}: ${err.message}`);
     db.prepare('UPDATE links SET swap_status = ? WHERE id = ?').run('failed', linkId);

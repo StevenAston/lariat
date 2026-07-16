@@ -14,6 +14,7 @@ export interface TorrentInfo {
 }
 
 export interface TorrentFile {
+  index: number;
   name: string;
   size: number;
   progress: number;
@@ -109,7 +110,12 @@ export class QbtClient {
   }
 
   async torrentFiles(hash: string): Promise<TorrentFile[]> {
-    return this.request<TorrentFile[]>(`/api/v2/torrents/files?hash=${hash}`);
+    const files = await this.request<any[]>(`/api/v2/torrents/files?hash=${hash}`);
+    return files.map((f, i) => ({ ...f, index: f.index !== undefined ? f.index : i }));
+  }
+
+  async filePrio(hash: string, id: number, priority: number): Promise<void> {
+    await this.request<void>('/api/v2/torrents/filePrio', 'POST', { hash, id: id.toString(), priority: priority.toString() });
   }
 
   async pause(hash: string): Promise<void> {

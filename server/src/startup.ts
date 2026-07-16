@@ -26,8 +26,15 @@ export async function rearmCoordinators(qbt: QbtClient) {
   const db = getDb();
   
   // Get all links that might be part of an incomplete pack.
-  // We'll just load all links and group by hash.
-  const links = db.prepare('SELECT * FROM links WHERE hash IS NOT NULL').all() as any[];
+  // We filter out torrents that have already been successfully rechecked,
+  // or that are older than 24 hours to prevent rechecking the entire library on startup.
+  const links = db.prepare(`
+    SELECT l.* FROM links l
+    LEFT JOIN torrents t ON l.hash = t.hash
+    WHERE l.hash IS NOT NULL 
+      AND (t.state != 'rechecked' OR t.state IS NULL)
+      AND l.updated_at > (unixepoch() - 86400)
+  `).all() as any[];
   const byHash = new Map<string, any[]>();
   
   for (const link of links) {

@@ -7,6 +7,7 @@ import { QbtClient } from './qbtClient';
 import { classifyAnomaly, ClassifierInput, Anomaly } from './classifier';
 import { resolvePhysicalPath, driveCoordinator, computeSparseMerkle } from './hasher';
 import * as cron from 'node-cron';
+import { dispatchNotification } from './notifications';
 
 export class HealthWorker {
   private cronJob: cron.ScheduledTask | null = null;
@@ -171,6 +172,14 @@ export class HealthWorker {
       `).run(link.id, JSON.stringify({ from: prevHealth, to: anomaly }));
       
       log.warn('HealthWorker', `Link ${link.id} health degraded to ${anomaly}`);
+      
+      dispatchNotification({
+        title: 'Health Degradation Detected',
+        message: `Link ${link.id} health degraded to ${anomaly}`,
+        level: 'warning',
+        linkId: link.id,
+        detail: { from: prevHealth, to: anomaly }
+      }).catch(err => log.error('HealthWorker', `Notification failed: ${err.message}`));
     }
 
     return { anomaly, prevHealth, healthCheckId };
