@@ -59,6 +59,35 @@ abstract class ArrClient {
 
     return res.json() as Promise<T>;
   }
+
+  async getQbtCategories(): Promise<{ category?: string, importedCategory?: string }> {
+    try {
+      const clients = await this.request<any[]>('/api/v3/downloadclient');
+      const qbt = clients.find((c: any) => c.implementation === 'QBittorrent');
+      if (!qbt || !qbt.fields) {
+        return {};
+      }
+
+      let category: string | undefined;
+      let importedCategory: string | undefined;
+
+      for (const field of qbt.fields) {
+        // Sonarr uses tvCategory, Radarr uses movieCategory
+        if (field.name === 'tvCategory' || field.name === 'movieCategory') {
+          category = field.value;
+        } 
+        // Sonarr might use tvImportedCategory or tvCategoryImported
+        else if (field.name === 'tvCategoryImported' || field.name === 'tvImportedCategory' || field.name === 'movieCategoryImported' || field.name === 'movieImportedCategory') {
+          importedCategory = field.value;
+        }
+      }
+
+      return { category, importedCategory };
+    } catch (e: any) {
+      // In case download clients can't be fetched or parsing fails, fail gracefully
+      return {};
+    }
+  }
 }
 
 export class SonarrClient extends ArrClient {

@@ -1,0 +1,47 @@
+{"detail":{"hash":"hash123","plexSize":838860800,"qbtSize":524288000},"level":"warn","message":"File size difference > 200MB","source":"Detector","timestamp":"2026-07-16T09:17:54.051Z"}
+{"detail":{"hash":"hash123","name":"sample.mkv"},"level":"warn","message":"File appears to be a sample, ignoring","source":"Detector","timestamp":"2026-07-16T09:17:54.055Z"}
+{"level":"info","message":"Fetching all torrents from QBT...","source":"QbtPathMap","timestamp":"2026-07-16T09:17:54.059Z"}
+{"level":"info","message":"Fetched 2 torrents. Building path map...","source":"QbtPathMap","timestamp":"2026-07-16T09:17:54.062Z"}
+{"level":"info","message":"Path map built with 3 files.","source":"QbtPathMap","timestamp":"2026-07-16T09:17:54.063Z"}
+{"level":"info","message":"Re-arming coordinators...","source":"Startup","timestamp":"2026-07-16T09:17:54.096Z"}
+{"level":"info","message":"Initiating recheck for hash123","source":"RecheckWorker","timestamp":"2026-07-16T09:17:54.103Z"}
+{"level":"info","message":"Firing recheck for hash_pack","source":"Coordinator","timestamp":"2026-07-16T09:17:54.111Z"}
+{"detail":{"state":"pausedUP"},"level":"info","message":"Recheck complete for hash123","source":"RecheckWorker","timestamp":"2026-07-16T09:17:54.117Z"}
+{"level":"info","message":"Resuming hash123","source":"RecheckWorker","timestamp":"2026-07-16T09:17:54.118Z"}
+{"level":"info","message":"Initiating recheck for hash123","source":"RecheckWorker","timestamp":"2026-07-16T09:17:54.125Z"}
+{"level":"error","message":"Recheck polling timed out for hash123","source":"RecheckWorker","timestamp":"2026-07-16T09:17:54.133Z"}
+{"level":"info","message":"Handling import event for hash123","source":"Orchestrator","timestamp":"2026-07-16T09:17:54.125Z"}
+{"detail":{"key":"value"},"level":"info","message":"testMessage","source":"testSource","timestamp":"2026-07-16T09:17:54.104Z"}
+{"level":"info","message":"Pausing torrent hash123 before swap","source":"SwapWorker","timestamp":"2026-07-16T09:17:54.125Z"}
+{"detail":{"hash":"missing"},"level":"warn","message":"Hash not found in QBT","source":"Resolver","timestamp":"2026-07-16T09:17:54.121Z"}
+{"level":"info","message":"Firing recheck for hash123","source":"Coordinator","timestamp":"2026-07-16T09:17:59.625Z"}
+{"detail":{"hash":"hash123","state":"error"},"level":"warn","message":"Torrent is in an error state","source":"Resolver","timestamp":"2026-07-16T09:17:54.158Z"}
+{"level":"info","message":"Starting reconciliation run...","source":"Reconciliation","timestamp":"2026-07-16T09:17:54.180Z"}
+{"level":"info","message":"Fetching all torrents from QBT...","source":"QbtPathMap","timestamp":"2026-07-16T09:17:54.183Z"}
+{"level":"info","message":"Fetched 4 torrents. Building path map...","source":"QbtPathMap","timestamp":"2026-07-16T09:17:54.183Z"}
+{"level":"info","message":"Path map built with 4 files.","source":"QbtPathMap","timestamp":"2026-07-16T09:17:54.184Z"}
+{"level":"info","message":"Upgrade detected. Processing old torrent oldhash","source":"UpgradeWorker","timestamp":"2026-07-16T09:17:54.183Z"}
+{"detail":{"double_symlink":0,"healthy":1,"missing_real_file":1,"no_torrent":0,"orphan_symlink":1,"torrent_no_file":0,"total":5,"unmanaged_torrent":1,"unprocessed":1,"wrong_target":0},"level":"info","message":"Reconciliation complete","source":"Reconciliation","timestamp":"2026-07-16T09:17:54.200Z"}
+{"level":"info","message":"Firing recheck for hash123","source":"Coordinator","timestamp":"2026-07-16T09:18:03.135Z"}
+{"level":"info","message":"Pausing torrent hash123 before swap","source":"SwapWorker","timestamp":"2026-07-16T09:17:54.206Z"}
+{"level":"info","message":"Initiating recheck for hash123","source":"RecheckWorker","timestamp":"2026-07-16T09:17:59.625Z"}
+{"level":"error","message":"Failed to recheck hash123: fetch failed","source":"Orchestrator","timestamp":"2026-07-16T09:18:00.124Z"}
+{"level":"warn","message":"Link 1 health degraded to orphan_symlink","source":"HealthWorker","timestamp":"2026-07-16T09:17:54.399Z"}
+{"level":"info","message":"[STUB] Notification dispatched: Health Degradation Detected - Link 1 health degraded to orphan_symlink","source":"Notifications","timestamp":"2026-07-16T09:17:54.402Z"}
+{"level":"info","message":"Starting scheduled health sweep","source":"HealthWorker","timestamp":"2026-07-16T09:17:54.427Z"}
+{"level":"warn","message":"Link 1 health degraded to missing_real_file","source":"HealthWorker","timestamp":"2026-07-16T09:17:54.429Z"}
+{"level":"info","message":"[STUB] Notification dispatched: Health Degradation Detected - Link 1 health degraded to missing_real_file","source":"Notifications","timestamp":"2026-07-16T09:17:54.430Z"}
+{"level":"warn","message":"Link 2 health degraded to missing_real_file","source":"HealthWorker","timestamp":"2026-07-16T09:17:54.433Z"}
+{"level":"info","message":"[STUB] Notification dispatched: Health Degradation Detected - Link 2 health degraded to missing_real_file","source":"Notifications","timestamp":"2026-07-16T09:17:54.433Z"}
+{"level":"info","message":"Sweep complete. Checked 2 links","source":"HealthWorker","timestamp":"2026-07-16T09:17:54.434Z"}
+{"detail":{"foo":"bar"},"level":"info","message":"this is an info message","source":"testSource","timestamp":"2026-07-16T09:17:54.431Z"}
+{"level":"info","message":"Pausing torrent hash123 before swap","source":"SwapWorker","timestamp":"2026-07-16T09:17:54.752Z"}
+{"level":"info","message":"Manual recheck triggered for hash hash1","source":"API","timestamp":"2026-07-16T09:17:56.288Z"}
+{"level":"info","message":"Dispatching Sonarr import event for hash deadbeef1234","source":"Webhook","timestamp":"2026-07-16T09:17:56.629Z"}
+{"level":"info","message":"Handling import event for deadbeef1234","source":"Orchestrator","timestamp":"2026-07-16T09:17:56.639Z"}
+{"level":"info","message":"Dispatching Sonarr import event for hash deadbeef5678","source":"Webhook","timestamp":"2026-07-16T09:17:56.727Z"}
+{"level":"info","message":"Handling import event for deadbeef5678","source":"Orchestrator","timestamp":"2026-07-16T09:17:56.731Z"}
+{"level":"error","message":"Error handling Sonarr event: fetch failed","source":"Webhook","timestamp":"2026-07-16T09:17:56.751Z"}
+{"level":"error","message":"Error handling Sonarr event: fetch failed","source":"Webhook","timestamp":"2026-07-16T09:17:56.771Z"}
+{"level":"info","message":"Received Sonarr Test event","source":"Webhook","timestamp":"2026-07-16T09:17:56.773Z"}
+{"detail":{"error":"Symlink privilege not held"},"level":"critical","message":"Symlink privilege check failed","source":"HealthCheck","timestamp":"2026-07-16T09:17:56.946Z"}

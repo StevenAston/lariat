@@ -27,6 +27,7 @@ describe('Startup Integration', () => {
 
     // Mock QBT with 10 video files
     mockQbt = {
+      torrentsByHash: vi.fn().mockResolvedValue({ category: 'tv/sonarr-complete' }),
       torrentFiles: vi.fn().mockResolvedValue(
         Array.from({ length: 10 }).map((_, i) => ({ name: `S01E${i + 1}.mkv`, size: 100 }))
       )
@@ -41,7 +42,7 @@ describe('Startup Integration', () => {
   });
 
   it('re-arms coordinator for a half-imported pack', async () => {
-    await rearmCoordinators(mockQbt as QbtClient);
+    await rearmCoordinators(mockQbt as QbtClient, { importedCategory: 'tv/sonarr-complete' });
 
     const state = getState('hash_pack');
     expect(state).not.toBeNull();

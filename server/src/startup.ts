@@ -17,11 +17,19 @@ export async function runStartupIntegration(
   // 1. Run reconciliation
   await runReconciliation(qbt, sonarr, radarr);
 
+  // Fetch categories from *arrs
+  const sonarrCats = await sonarr.getQbtCategories();
+  const radarrCats = await radarr.getQbtCategories();
+
   // 2. Re-arm coordinators
-  await rearmCoordinators(qbt);
+  await rearmCoordinators(qbt, sonarrCats, radarrCats);
 }
 
-export async function rearmCoordinators(qbt: QbtClient) {
+export async function rearmCoordinators(
+  qbt: QbtClient, 
+  sonarrCats: { category?: string, importedCategory?: string } = {}, 
+  radarrCats: { category?: string, importedCategory?: string } = {}
+) {
   log.info('Startup', 'Re-arming coordinators...');
   const db = getDb();
   
@@ -49,6 +57,30 @@ export async function rearmCoordinators(qbt: QbtClient) {
 
   for (const [hash, hashLinks] of byHash.entries()) {
     try {
+      const torrentInfo = await qbt.torrentsByHash(hash);
+      if (!torrentInfo) continue;
+
+      const tCat = torrentInfo.category;
+
+      // 1. If it's the normal grab category, ignore it completely.
+      if ((sonarrCats.category && tCat === sonarrCats.category) || 
+          (radarrCats.category && tCat === radarrCats.category)) {
+        log.debug('Startup', `Ignoring hash ${hash} because it is in the normal grab category: ${tCat}`);
+        continue;
+      }
+
+      // 2. Enforce imported category if it is configured in either *arr app.
+      if (sonarrCats.importedCategory || radarrCats.importedCategory) {
+        let isImportedCat = false;
+        if (sonarrCats.importedCategory && tCat === sonarrCats.importedCategory) isImportedCat = true;
+        if (radarrCats.importedCategory && tCat === radarrCats.importedCategory) isImportedCat = true;
+
+        if (!isImportedCat) {
+          log.debug('Startup', `Ignoring hash ${hash} because category ${tCat} is not the imported category.`);
+          continue;
+        }
+      }
+
       const files = await qbt.torrentFiles(hash);
       const videoFiles = files.filter(f => videoExts.has(path.extname(f.name).toLowerCase()));
       const videoFileCount = videoFiles.length;

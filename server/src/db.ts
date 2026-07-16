@@ -91,6 +91,10 @@ const migrations = [
   `
   ALTER TABLE links ADD COLUMN integrity_root TEXT;
   ALTER TABLE links ADD COLUMN integrity_size INTEGER;
+  `,
+  // 003 - Add rechecked_at
+  `
+  ALTER TABLE torrents ADD COLUMN rechecked_at INTEGER;
   `
 ];
 

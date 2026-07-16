@@ -25,7 +25,7 @@ export async function doRecheck(hash: string, qbtClient: QbtClient, pollInterval
       log.info('RecheckWorker', `Recheck complete for ${hash}`, { state });
       
       const db = getDb();
-      const update = db.prepare('UPDATE torrents SET state = ? WHERE hash = ?');
+      const update = db.prepare('UPDATE torrents SET state = ?, rechecked_at = unixepoch() WHERE hash = ?');
       update.run('rechecked', hash);
 
       log.info('RecheckWorker', `Resuming ${hash}`);
