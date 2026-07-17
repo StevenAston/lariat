@@ -107,23 +107,23 @@ export class SonarrClient extends ArrClient {
   }
 
   async listEpisodeFiles(): Promise<EpisodeFile[]> {
-    const pageSize = 1000;
-    let page = 1;
+    // In newer Sonarr versions, /api/v3/episodefile requires seriesId.
+    // So we first fetch all series, then fetch files for each series.
+    const allSeries = await this.request<Series[]>('/api/v3/series');
     let allFiles: EpisodeFile[] = [];
     
-    while (true) {
-      const response = await this.request<{ records: EpisodeFile[], totalRecords: number }>('/api/v3/episodefile', {
-        page: page.toString(),
-        pageSize: pageSize.toString(),
-      });
-      
-      allFiles = allFiles.concat(response.records);
-      
-      if (allFiles.length >= response.totalRecords || response.records.length === 0) {
-        break;
+    // Process in chunks to avoid slamming the API too hard at once
+    const chunkSize = 10;
+    for (let i = 0; i < allSeries.length; i += chunkSize) {
+      const chunk = allSeries.slice(i, i + chunkSize);
+      const chunkPromises = chunk.map(series => 
+        this.request<EpisodeFile[]>('/api/v3/episodefile', { seriesId: series.id.toString() })
+          .catch(() => [] as EpisodeFile[]) // Ignore individual series failures
+      );
+      const results = await Promise.all(chunkPromises);
+      for (const res of results) {
+        allFiles = allFiles.concat(res);
       }
-      
-      page++;
     }
     
     return allFiles;
@@ -140,8 +140,22 @@ export class RadarrClient extends ArrClient {
   }
 
   async listMovieFiles(): Promise<MovieFile[]> {
-    // Radarr moviefile endpoint does not seem paginated in the same way, but let's assume it returns an array
-    // Wait, the spec says Sonarr is paginated. Radarr `listMovieFiles` might just be `moviefile` array.
-    return this.request<MovieFile[]>('/api/v3/moviefile');
+    const allMovies = await this.request<Movie[]>('/api/v3/movie');
+    let allFiles: MovieFile[] = [];
+    
+    const chunkSize = 10;
+    for (let i = 0; i < allMovies.length; i += chunkSize) {
+      const chunk = allMovies.slice(i, i + chunkSize);
+      const chunkPromises = chunk.map(movie => 
+        this.request<MovieFile[]>('/api/v3/moviefile', { movieId: movie.id.toString() })
+          .catch(() => [] as MovieFile[])
+      );
+      const results = await Promise.all(chunkPromises);
+      for (const res of results) {
+        allFiles = allFiles.concat(res);
+      }
+    }
+    
+    return allFiles;
   }
 }

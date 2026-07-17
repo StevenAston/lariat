@@ -19,18 +19,19 @@ describe('ArrClients', () => {
       fetchSpy.mockImplementation(async (input: RequestInfo | URL) => {
         const url = input.toString();
         
-        if (url.includes('/api/v3/episodefile?page=1')) {
-          return new Response(JSON.stringify({
-            records: [{ id: 1, path: '/file1.mkv' }],
-            totalRecords: 2
-          }), { status: 200, headers: { 'content-type': 'application/json' } });
+        if (url.includes('/api/v3/series') && !url.includes('seriesId') && !url.includes('series/')) {
+          return new Response(JSON.stringify([
+            { id: 1 },
+            { id: 2 }
+          ]), { status: 200, headers: { 'content-type': 'application/json' } });
         }
 
-        if (url.includes('/api/v3/episodefile?page=2')) {
-          return new Response(JSON.stringify({
-            records: [{ id: 2, path: '/file2.mkv' }],
-            totalRecords: 2
-          }), { status: 200, headers: { 'content-type': 'application/json' } });
+        if (url.includes('/api/v3/episodefile?seriesId=1')) {
+          return new Response(JSON.stringify([{ id: 1, path: '/file1.mkv' }]), { status: 200, headers: { 'content-type': 'application/json' } });
+        }
+
+        if (url.includes('/api/v3/episodefile?seriesId=2')) {
+          return new Response(JSON.stringify([{ id: 2, path: '/file2.mkv' }]), { status: 200, headers: { 'content-type': 'application/json' } });
         }
 
         return new Response('Not found', { status: 404 });
@@ -79,7 +80,11 @@ describe('ArrClients', () => {
           return new Response(JSON.stringify({ id: 20, title: 'Movie', path: '/Movie' }), { status: 200, headers: { 'content-type': 'application/json' } });
         }
 
-        if (url.includes('/api/v3/moviefile')) {
+        if (url.includes('/api/v3/movie') && !url.includes('movieId') && !url.includes('movie/')) {
+          return new Response(JSON.stringify([{ id: 20 }]), { status: 200, headers: { 'content-type': 'application/json' } });
+        }
+
+        if (url.includes('/api/v3/moviefile?movieId=20')) {
           return new Response(JSON.stringify([{ id: 200, movieId: 20, path: '/Movie/movie.mkv' }]), { status: 200, headers: { 'content-type': 'application/json' } });
         }
 
