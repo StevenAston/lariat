@@ -81,6 +81,15 @@ export async function rearmCoordinators(
         }
       }
 
+      // 3. If it's already seeding or pausedUP, we don't need to recheck it!
+      // This is especially useful for backfilling old torrents that were processed before we added 'rechecked_at'.
+      const tState = torrentInfo.state;
+      if (tState === 'pausedUP' || tState === 'seeding' || tState === 'stalledUP' || tState === 'forcedUP' || tState === 'uploading') {
+        log.info('Startup', `Hash ${hash} is already fully downloaded and seeding (${tState}). Marking as rechecked in DB.`);
+        db.prepare('UPDATE torrents SET state = ?, rechecked_at = unixepoch() WHERE hash = ?').run('rechecked', hash);
+        continue;
+      }
+
       const files = await qbt.torrentFiles(hash);
       const videoFiles = files.filter(f => videoExts.has(path.extname(f.name).toLowerCase()));
       const videoFileCount = videoFiles.length;
