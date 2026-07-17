@@ -1,8 +1,16 @@
 import { QbtClient } from './qbtClient';
 import { getDb } from './db';
 import { log } from './logger';
+import { requestApproval } from './approval';
 
 export async function doRecheck(hash: string, qbtClient: QbtClient, pollIntervalMs: number = 2000, maxAttempts: number = 30): Promise<void> {
+  try {
+    await requestApproval('Recheck Torrent', `Trigger recheck in qBittorrent for hash ${hash}`);
+  } catch (e: any) {
+    log.warn('RecheckWorker', `Recheck aborted by user for hash ${hash}`);
+    throw e;
+  }
+
   log.info('RecheckWorker', `Initiating recheck for ${hash}`);
   await qbtClient.recheck(hash);
 

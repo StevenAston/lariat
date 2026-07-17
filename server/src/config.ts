@@ -22,6 +22,7 @@ const configSchema = z.object({
   }),
   yaml: z.object({
     logFile: z.string().default('logs/lariat.log'),
+    interactiveMode: z.boolean().default(false),
     videoExtensions: z.array(z.string()).default(['.mkv', '.mp4', '.avi', '.m4v']),
     importMode: z.enum(['copy', 'move']).default('copy'),
     debounceMs: z.coerce.number().default(5000),

@@ -6,6 +6,7 @@ import { ImportEvent } from './webhooks';
 import { log } from './logger';
 import { normalisePath } from './config';
 import { debounceRecheck } from './coordinator';
+import { requestApproval } from './approval';
 
 export async function processUpgrade(event: ImportEvent, qbtClient: QbtClient): Promise<void> {
   if (!event.isUpgrade || !event.deletedFiles || event.deletedFiles.length === 0) {
@@ -23,6 +24,13 @@ export async function processUpgrade(event: ImportEvent, qbtClient: QbtClient): 
 
       log.info('UpgradeWorker', `Upgrade detected. Processing old torrent ${link.hash}`);
       
+      try {
+        await requestApproval('Process Upgrade', `Delete old symlink for ${link.qbt_land_path} (Torrent: ${link.hash})`);
+      } catch (e: any) {
+        log.warn('UpgradeWorker', `Upgrade action aborted by user: ${e.message}`);
+        continue;
+      }
+
       // 1. Pause old torrent
       await qbtClient.pause(link.hash);
       

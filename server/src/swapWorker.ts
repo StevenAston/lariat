@@ -3,6 +3,7 @@ import path from 'path';
 import { getDb } from './db';
 import { log } from './logger';
 import { QbtClient } from './qbtClient';
+import { requestApproval } from './approval';
 
 export async function doSwap(linkId: number, mode: 'copy' | 'move', qbtClient: QbtClient): Promise<void> {
   const db = getDb();
@@ -40,6 +41,8 @@ export async function doSwap(linkId: number, mode: 'copy' | 'move', qbtClient: Q
       }
     }
   }
+
+  await requestApproval('Perform Swap', `Symlink ${plexPath} into ${qbtPath}`);
 
   // Pause torrent
   log.info('SwapWorker', `Pausing torrent ${hash} before swap`);

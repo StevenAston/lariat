@@ -6,6 +6,7 @@ import { debounceRecheck } from './coordinator';
 import { loadConfig } from './config';
 import { log } from './logger';
 import path from 'path';
+import { requestApproval } from './approval';
 
 export async function runStartupIntegration(
   qbt: QbtClient,
@@ -98,6 +99,13 @@ export async function rearmCoordinators(
       // But debounceRecheck will fire immediately if importsSeen >= videoFileCount.
       // If we don't want it to recheck already-completed torrents, we should check if the torrent state is already seeding/paused.
       // For this task, we will just re-arm. If it fires, our recheck logic handles idempotency.
+      
+      try {
+        await requestApproval('Startup Re-arm', `Re-arm recheck coordinator for hash ${hash}`);
+      } catch (e: any) {
+        log.warn('Startup', `Re-arming aborted by user for hash ${hash}`);
+        continue;
+      }
       
       for (const link of hashLinks) {
         const fileId = link.episode_file_id ? link.episode_file_id.toString() : 
