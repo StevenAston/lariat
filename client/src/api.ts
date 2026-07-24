@@ -40,6 +40,11 @@ export const api = {
     body: JSON.stringify({ action, linkIds })
   }).then(r => r.json()),
   getConfig: () => fetchJson<{ success: boolean; data: any }>('/api/config'),
+  saveConfig: (data: any) => fetch('/api/config', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).then(r => r.json()),
   getSummary: () => fetchJson<{
     success: boolean;
     data: {

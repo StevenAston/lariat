@@ -75,7 +75,70 @@ export function loadConfig() {
 }
 
 // Global config instance
-export const config = loadConfig();
+export let config = loadConfig();
+
+export function saveConfig(newConfig: any) {
+  const envPath = path.resolve(__dirname, '../../.env');
+  const yamlPath = path.resolve(__dirname, '../../config.yaml');
+  
+  // 1. Separate the new config into env and yaml based on schema shape
+  const envKeys = Object.keys(configSchema.shape.env.shape);
+  const newEnv: Record<string, string> = {};
+  const newYaml: Record<string, any> = {};
+
+  for (const [key, val] of Object.entries(newConfig)) {
+    if (envKeys.includes(key)) {
+      newEnv[key] = String(val);
+    } else {
+      newYaml[key] = val;
+    }
+  }
+
+  // 2. Update .env
+  let envContent = '';
+  if (fs.existsSync(envPath)) {
+    envContent = fs.readFileSync(envPath, 'utf8');
+  }
+  
+  const envLines = envContent.split('\n');
+  const updatedEnvKeys = new Set<string>();
+
+  for (let i = 0; i < envLines.length; i++) {
+    const line = envLines[i];
+    const match = line.match(/^([A-Z_]+)=/);
+    if (match) {
+      const key = match[1];
+      if (newEnv[key] !== undefined) {
+        envLines[i] = `${key}=${newEnv[key]}`;
+        updatedEnvKeys.add(key);
+      }
+    }
+  }
+
+  for (const [key, val] of Object.entries(newEnv)) {
+    if (!updatedEnvKeys.has(key)) {
+      envLines.push(`${key}=${val}`);
+    }
+  }
+
+  fs.writeFileSync(envPath, envLines.join('\n'));
+  
+  // 3. Update config.yaml
+  let yamlContent = {};
+  if (fs.existsSync(yamlPath)) {
+    yamlContent = yaml.parse(fs.readFileSync(yamlPath, 'utf8')) || {};
+  }
+  
+  const mergedYaml = { ...yamlContent, ...newYaml };
+  fs.writeFileSync(yamlPath, yaml.stringify(mergedYaml));
+
+  // 4. Update process.env and in-memory config
+  for (const [key, val] of Object.entries(newEnv)) {
+    process.env[key] = val;
+  }
+  
+  config = loadConfig();
+}
 
 /**
  * Normalizes a path for consistent comparison:

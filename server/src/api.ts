@@ -1,7 +1,7 @@
 import express from 'express';
 import { getDb } from './db';
 import { doRecheck } from './recheckWorker';
-import { loadConfig } from './config';
+import { loadConfig, saveConfig } from './config';
 import { QbtClient } from './qbtClient';
 import { log } from './logger';
 import { getPendingCount } from './coordinator';
@@ -230,6 +230,18 @@ apiRouter.get('/config', (req, res) => {
     const cfg = loadConfig();
     res.json({ success: true, data: cfg });
   } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+apiRouter.post('/config', (req, res) => {
+  try {
+    saveConfig(req.body);
+    const cfg = loadConfig();
+    log.info('API', 'Configuration updated successfully');
+    res.json({ success: true, data: cfg, message: 'Configuration saved' });
+  } catch (err: any) {
+    log.error('API', `Failed to save configuration: ${err.message}`);
     res.status(500).json({ success: false, error: err.message });
   }
 });

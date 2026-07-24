@@ -8,6 +8,7 @@ import { LiveLog } from './LiveLog';
 import { LinkDetail } from './LinkDetail';
 import { BatchPage } from './BatchPage';
 import { TopologyPage } from './TopologyPage';
+import { SettingsPage } from './SettingsPage';
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
@@ -275,35 +276,6 @@ function Links() {
   );
 }
 
-function SettingsPage() {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['config'],
-    queryFn: () => api.getConfig(),
-  });
-
-  return (
-    <Flex direction="column" gap="4">
-      <Heading>Settings</Heading>
-      <Card>
-        <Heading size="4" mb="4">Current Configuration</Heading>
-        {isLoading ? (
-          <Text>Loading config...</Text>
-        ) : error || !data?.success ? (
-          <Text color="red">Failed to load configuration</Text>
-        ) : (
-          <Box style={{ backgroundColor: 'var(--gray-a3)', padding: '16px', borderRadius: 'var(--radius-3)', overflowX: 'auto' }}>
-            <pre style={{ margin: 0, fontFamily: 'var(--mono)', fontSize: '12px' }}>
-              {JSON.stringify(data.data, null, 2)}
-            </pre>
-          </Box>
-        )}
-        <Text size="2" color="gray" mt="4" style={{ display: 'block' }}>
-          Note: Configuration is currently read-only in this interface. Edit data/config.json directly to make changes.
-        </Text>
-      </Card>
-    </Flex>
-  );
-}
 
 export default function App() {
   return (
