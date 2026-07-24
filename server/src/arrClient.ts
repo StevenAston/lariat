@@ -38,7 +38,7 @@ export interface Movie {
 abstract class ArrClient {
   constructor(protected baseUrl: string, protected apiKey: string) {}
 
-  protected async request<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
+  protected async request<T>(endpoint: string, params?: Record<string, string>, method: string = 'GET', body?: any): Promise<T> {
     const url = new URL(`${this.baseUrl}${endpoint}`);
     if (params) {
       for (const [key, value] of Object.entries(params)) {
@@ -46,18 +46,32 @@ abstract class ArrClient {
       }
     }
 
-    const res = await fetch(url.toString(), {
+    const options: RequestInit = {
+      method,
       headers: {
         'X-Api-Key': this.apiKey,
         'Accept': 'application/json'
       }
-    });
+    };
+
+    if (body) {
+      options.headers = {
+        ...options.headers,
+        'Content-Type': 'application/json'
+      };
+      options.body = JSON.stringify(body);
+    }
+
+    const res = await fetch(url.toString(), options);
 
     if (!res.ok) {
       throw new Error(`*arr Request failed: ${res.status} ${res.statusText} for ${endpoint}`);
     }
 
-    return res.json() as Promise<T>;
+    // if response is 204 or empty string, handle it
+    const text = await res.text();
+    if (!text) return {} as T;
+    return JSON.parse(text) as T;
   }
 
   async getQbtCategories(): Promise<{ category?: string, importedCategory?: string }> {
@@ -86,6 +100,35 @@ abstract class ArrClient {
     } catch (e: any) {
       // In case download clients can't be fetched or parsing fails, fail gracefully
       return {};
+    }
+  }
+
+  async setupWebhook(url: string, name: string = 'Lariat'): Promise<void> {
+    try {
+      const existing = await this.request<any[]>('/api/v3/notification');
+      const webhook = existing.find(n => n.name === name);
+
+      const payload = {
+        name,
+        implementation: 'Webhook',
+        configContract: 'WebhookSettings',
+        fields: [
+          { name: 'url', value: url },
+          { name: 'method', value: 1 } // 1 for POST
+        ],
+        onDownload: true,
+        onUpgrade: true
+      };
+
+      if (webhook) {
+        // Update existing
+        await this.request(`/api/v3/notification/${webhook.id}`, undefined, 'PUT', { ...webhook, ...payload });
+      } else {
+        // Create new
+        await this.request('/api/v3/notification', undefined, 'POST', payload);
+      }
+    } catch (e: any) {
+      throw new Error(`Failed to setup webhook in *arr: ${e.message}`);
     }
   }
 }

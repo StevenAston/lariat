@@ -246,6 +246,48 @@ apiRouter.post('/config', (req, res) => {
   }
 });
 
+apiRouter.post('/webhooks/setup', async (req, res) => {
+  try {
+    const { lariatUrl } = req.body;
+    if (!lariatUrl) {
+      return res.status(400).json({ success: false, error: 'lariatUrl is required' });
+    }
+
+    // Strip trailing slash
+    const baseUrl = lariatUrl.replace(/\/$/, '');
+
+    const sonarr = new SonarrClient();
+    const radarr = new RadarrClient();
+
+    let sonarrOk = true, radarrOk = true;
+    let errors: string[] = [];
+
+    try {
+      await sonarr.setupWebhook(`${baseUrl}/webhook/sonarr`);
+      log.info('API', 'Successfully setup Sonarr webhook');
+    } catch (e: any) {
+      sonarrOk = false;
+      errors.push(`Sonarr: ${e.message}`);
+    }
+
+    try {
+      await radarr.setupWebhook(`${baseUrl}/webhook/radarr`);
+      log.info('API', 'Successfully setup Radarr webhook');
+    } catch (e: any) {
+      radarrOk = false;
+      errors.push(`Radarr: ${e.message}`);
+    }
+
+    if (!sonarrOk && !radarrOk) {
+      return res.status(500).json({ success: false, error: errors.join(', ') });
+    }
+
+    res.json({ success: true, message: 'Webhooks configured', errors: errors.length > 0 ? errors : undefined });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 apiRouter.get('/topology', (req, res) => {
   try {
     const db = getDb();

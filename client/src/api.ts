@@ -45,6 +45,11 @@ export const api = {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
   }).then(r => r.json()),
+  setupWebhooks: (lariatUrl: string) => fetch('/api/webhooks/setup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ lariatUrl })
+  }).then(r => r.json()),
   getSummary: () => fetchJson<{
     success: boolean;
     data: {

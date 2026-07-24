@@ -12,6 +12,11 @@ export function SettingsPage() {
 
   const [formData, setFormData] = useState<any>({});
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [lariatUrl, setLariatUrl] = useState('');
+
+  useEffect(() => {
+    setLariatUrl(window.location.origin);
+  }, []);
 
   useEffect(() => {
     if (data?.success && data.data) {
@@ -27,6 +32,20 @@ export function SettingsPage() {
     },
     onError: (err: Error) => {
       alert(`Failed to save: ${err.message}`);
+    }
+  });
+
+  const webhookMutation = useMutation({
+    mutationFn: (url: string) => api.setupWebhooks(url),
+    onSuccess: (data) => {
+      if (data.success) {
+        alert(data.errors ? `Partial success: ${data.errors.join(', ')}` : 'Webhooks configured successfully in Sonarr and Radarr!');
+      } else {
+        alert(`Failed to setup webhooks: ${data.error}`);
+      }
+    },
+    onError: (err: Error) => {
+      alert(`Error setting up webhooks: ${err.message}`);
     }
   });
 
@@ -94,6 +113,23 @@ export function SettingsPage() {
                 onChange={e => handleArrayChange('videoExtensions', e.target.value)} 
               />
             </label>
+          </Flex>
+        </Card>
+
+        {/* WEBHOOKS */}
+        <Card>
+          <Heading size="3" mb="3">Integrations</Heading>
+          <Flex direction="column" gap="3">
+            <Text size="2" color="gray">
+              Automatically register Lariat as a Webhook in Sonarr and Radarr so they ping us immediately upon download or upgrade.
+            </Text>
+            <label>
+              <Text size="2" weight="bold">Lariat Base URL</Text>
+              <TextField.Root value={lariatUrl} onChange={e => setLariatUrl(e.target.value)} />
+            </label>
+            <Button mt="2" variant="soft" onClick={() => webhookMutation.mutate(lariatUrl)} disabled={webhookMutation.isPending}>
+              {webhookMutation.isPending ? 'Registering...' : 'Register Webhooks in *arr'}
+            </Button>
           </Flex>
         </Card>
 
